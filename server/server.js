@@ -5,6 +5,8 @@ require("dotenv").config();
 const { getRestaurantsByLocation } = require("./controller/LocationController");
 const getRestaurantById=require("./routes/SearchRoutes");
 const app = express();
+const helmet = require("helmet");
+
 app.use(cors());
 app.use(express.json());
 
@@ -13,6 +15,22 @@ mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'", "blob:"],
+        styleSrc: ["'self'", "'unsafe-inline'"],
+        imgSrc: ["'self'", "data:"],
+        connectSrc: ["'self'", "https://dsp-r5ar.onrender.com"],
+        frameSrc: ["'self'"],
+        objectSrc: ["'none'"],
+      },
+    },
+  })
+);
+
 
 const db = mongoose.connection;
 db.on("connected", () => console.log("MongoDB connected successfully"));
