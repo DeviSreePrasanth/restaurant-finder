@@ -15,14 +15,16 @@ const Navbar = () => {
 
         {/* Menu with Icons */}
         <ul className="flex space-x-6 ml-auto">
-          <li>
+          <li className="flex items-center">
             <Link to="/" className="flex items-center hover:text-gray-400 font-medium transition duration-300">
               <FaHome size={24} />
+              <h1 className="ml-2 hidden sm:inline">Home</h1> {/* Hidden on small screens */}
             </Link>
           </li>
-          <li>
+          <li className="flex items-center">
             <Link to="/restaurants" className="flex items-center hover:text-gray-400 font-medium transition duration-300">
               <FaUtensils size={24} />
+              <h1 className="ml-2 hidden sm:inline">Restaurants</h1> {/* Hidden on small screens */}
             </Link>
           </li>
         </ul>

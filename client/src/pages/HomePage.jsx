@@ -4,11 +4,58 @@ import bg from "../images/bg.jpeg";
 import { FaMapMarkerAlt, FaSearch, FaLocationArrow } from "react-icons/fa";
 import Navbar from "../components/Navbar";
 
+// CSS for animation (in the same file)
+const styles = {
+  animationWrapper: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+  },
+  container: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "column",
+    height: "100vh",
+    overflow: "hidden",
+    minHeight: "100vh",
+  },
+  textWrapper: {
+    textAlign: "center",
+    color: "white",
+    maxWidth: "4xl",
+    width: "100%",
+    paddingLeft: "1rem",
+    paddingRight: "1rem",
+    marginTop: "8rem",
+  },
+  animationKeyframes: `
+    @keyframes slideIn {
+      0% {
+        transform: translateX(-100%);
+        opacity: 0;
+      }
+      100% {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+  `,
+  h1: {
+    textAlign: "center",
+    color: "white",
+    fontSize: "3rem",
+    marginBottom: "1.5rem",
+    animation: "slideIn 1.5s forwards",
+  },
+};
+
 const HomePage = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [latitude, setLatitude] = useState("");
   const [longitude, setLongitude] = useState("");
-  const [radius, setRadius] = useState("10"); // Default radius is 3 km
+  const [radius, setRadius] = useState("10"); // Default radius is 10 km
   const [isLocationSearch, setIsLocationSearch] = useState(false);
   const [loadingLocation, setLoadingLocation] = useState(false);
   const navigate = useNavigate();
@@ -67,28 +114,39 @@ const HomePage = () => {
   };
 
   return (
-    <>
-      <Navbar />
-      <div
-        style={{
-          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${bg})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          minHeight: "100vh",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <div className="text-center text-white max-w-4xl w-full px-4">
-          <h1 className="text-5xl font-bold mb-6 animate-fade-in">
-            Welcome to Restaurant Finder
-          </h1>
-          <p className="text-xl mb-8 animate-fade-in delay-100">
+    <div
+      style={{
+        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${bg})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        minHeight: "100vh",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        flexDirection: "column",
+        height: "100vh", // Ensure no scrolling
+        overflow: "hidden", // Prevent scrolling
+      }}
+    >
+      {/* Navbar */}
+      <div style={styles.animationWrapper}>
+        <Navbar />
+      </div>
+
+      {/* Main content */}
+      <div style={styles.container}>
+        {/* Injecting animation keyframes */}
+        <style>{styles.animationKeyframes}</style>
+
+        {/* Welcome Message with Slide-in effect for h1 */}
+        <div style={styles.textWrapper}>
+          <h1 style={styles.h1}>Welcome to Restaurant Finder</h1>
+          <p className="text-xl mb-8">
             Discover the best restaurants, search by cuisine, city, or name, and explore detailed restaurant information.
           </p>
 
-          <div className="bg-transparent rounded-lg shadow-2xl p-6 max-w-2xl mx-auto animate-fade-in delay-200">
+          {/* Search Box */}
+          <div className="bg-transparent rounded-lg shadow-2xl p-6 max-w-2xl mx-auto">
             <div className="flex items-center bg-white bg-opacity-20 border border-white border-opacity-30 rounded-lg overflow-hidden">
               {!isLocationSearch ? (
                 <input
@@ -98,6 +156,7 @@ const HomePage = () => {
                   placeholder="Search for restaurants, cuisines..."
                   className="flex-grow py-3 px-4 text-black bg-transparent focus:outline-none placeholder-gray-700 focus:placeholder-gray-600 transition-all duration-300"
                   aria-label="Search restaurants"
+                  required
                 />
               ) : (
                 <div className="flex gap-4 flex-grow">
@@ -108,6 +167,7 @@ const HomePage = () => {
                     placeholder="Enter Latitude"
                     className="py-3 px-4 text-black bg-transparent focus:outline-none placeholder-gray-700 focus:placeholder-gray-600 w-full transition-all duration-300"
                     aria-label="Latitude"
+                    required
                   />
                   <input
                     type="text"
@@ -116,6 +176,7 @@ const HomePage = () => {
                     placeholder="Enter Longitude"
                     className="py-3 px-4 text-black bg-transparent focus:outline-none placeholder-gray-700 focus:placeholder-gray-600 w-full transition-all duration-300"
                     aria-label="Longitude"
+                    required
                   />
                 </div>
               )}
@@ -129,6 +190,7 @@ const HomePage = () => {
               </button>
             </div>
 
+            {/* Location Button */}
             {isLocationSearch && (
               <button
                 onClick={fetchUserLocation}
@@ -145,6 +207,7 @@ const HomePage = () => {
               </button>
             )}
 
+            {/* Search Button */}
             <button
               onClick={handleSearchSubmit}
               className="mt-6 w-full sm:w-auto bg-gradient-to-r from-blue-500 to-purple-600 text-white text-lg font-semibold py-3 px-8 rounded-lg hover:from-purple-600 hover:to-blue-500 transition-all duration-300 transform hover:scale-105"
@@ -155,7 +218,7 @@ const HomePage = () => {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
