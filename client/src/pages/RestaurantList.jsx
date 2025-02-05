@@ -20,7 +20,7 @@ const RestaurantList = () => {
   const searchQuery = searchParams.get("search");
 
   useEffect(() => {
-    let apiUrl = "http://localhost:5000/restaurants";
+    let apiUrl = "https://dsp-1.onrender.com/restaurants";
 
     fetch(apiUrl)
       .then((response) => {

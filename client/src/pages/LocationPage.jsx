@@ -24,7 +24,7 @@ const LocationPage = () => {
           return;
         }
 
-        const apiUrl = `http://localhost:5000/locationR?lat=${lat}&lng=${lng}&radius=${radius}`;
+        const apiUrl = `https://dsp-1.onrender.com/locationR?lat=${lat}&lng=${lng}&radius=${radius}`;
         const response = await fetch(apiUrl);
 
         if (!response.ok) {
