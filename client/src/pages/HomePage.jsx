@@ -8,7 +8,7 @@ const HomePage = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [latitude, setLatitude] = useState("");
   const [longitude, setLongitude] = useState("");
-  const [radius, setRadius] = useState("3"); // Default radius is 3 km
+  const [radius, setRadius] = useState("10"); // Default radius is 3 km
   const [isLocationSearch, setIsLocationSearch] = useState(false);
   const [loadingLocation, setLoadingLocation] = useState(false);
   const navigate = useNavigate();
