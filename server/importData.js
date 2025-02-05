@@ -10,10 +10,10 @@ async function uploadData() {
         await client.connect();
 
         // Get the database and collection
-        const database = client.db('zomato');
-        const collection = database.collection('res');
+        const database = client.db('res');
+        const collection = database.collection('new');
 
-        const data = JSON.parse(fs.readFileSync('./file5.json', 'utf8'));
+        const data = JSON.parse(fs.readFileSync('./restaurants.json', 'utf8'));
 
         // Insert the data into the collection
         const result = await collection.insertMany(data);
