@@ -15,21 +15,34 @@ mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
+
 app.use(
   helmet({
     contentSecurityPolicy: {
       directives: {
         defaultSrc: ["'self'"],
-        scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'", "blob:"],
+        scriptSrc: [
+          "'self'",
+          "'unsafe-inline'",
+          "'unsafe-eval'",
+          "blob:",
+          "https://infird.com",
+          "https://apis.google.com",
+          "https://maps.googleapis.com",
+          "https://js.stripe.com",
+          "https://chat.openai.com",
+          "https://chatgpt.com"
+        ],
         styleSrc: ["'self'", "'unsafe-inline'"],
-        imgSrc: ["'self'", "data:"],
-        connectSrc: ["'self'", "https://dsp-r5ar.onrender.com"],
+        imgSrc: ["'self'", "data:", "https://infird.com"],
+        connectSrc: ["'self'", "https://infird.com"],
         frameSrc: ["'self'"],
         objectSrc: ["'none'"],
       },
     },
   })
 );
+
 
 
 const db = mongoose.connection;
