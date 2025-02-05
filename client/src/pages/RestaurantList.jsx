@@ -105,7 +105,7 @@ const RestaurantList = () => {
               >
                 Previous
               </button>
-              <span className="text-lg text-gray-700">Page {currentPage} of {totalPages}</span>
+              <span className="text-lg text-gray-700">Page {currentPage}</span>
               <button
                 onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
                 disabled={currentPage === totalPages}
