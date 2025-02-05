@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 require("dotenv").config();
 const { getRestaurantsByLocation } = require("./controller/LocationController");
-const getRestaurantById=require("./routes/Searchroutes");
+const getRestaurantById=require("./routes/SearchRoutes");
 const app = express();
 app.use(cors());
 app.use(express.json());
