@@ -127,10 +127,10 @@ const HomePage = () => {
       </div>
 
       <div className="text-center text-white max-w-4xl w-full px-4 mt-32">
-        <h1 className="text-4xl font-bold mb-6">
+        <h1 className="text-5xl font-bold mb-6">
           {animateLetters("Welcome", showLetterIndex)}<br/>
           {animateLetters("to ", showLetterIndex)}<br/>
-          {animateLetters("Restaurant", showLetterIndex)}
+          {animateLetters("Restaurant", showLetterIndex)}<br/>
           {animateLetters("Finder", showLetterIndex)}
         </h1>
         <p className="text-xl mb-8 animate-fade-in delay-100">
