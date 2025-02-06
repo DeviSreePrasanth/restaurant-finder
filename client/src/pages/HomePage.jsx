@@ -128,11 +128,9 @@ const HomePage = () => {
 
       <div className="text-center text-white max-w-4xl w-full px-4 mt-32">
       <h1 className="text-5xl font-bold mb-6 hidden sm:inline-block">
-    {animateLetters("Welcome", showLetterIndex)}
-    {animateLetters("to ", showLetterIndex)}
-    {animateLetters("Restaurant", showLetterIndex)}
-    {animateLetters("Finder", showLetterIndex)}
-  </h1>
+  Welcome to Restaurant Finder
+</h1>
+
   <h1 className="text-5xl font-bold mb-8 sm:hidden">
     <span className="inline-block">
       {animateLetters("Welcome", showLetterIndex)}
