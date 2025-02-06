@@ -6,6 +6,19 @@ import { MdGpsFixed } from "react-icons/md"; // Icon for latitude
 import { RiMapPin2Fill } from "react-icons/ri"; // Icon for longitude
 import Navbar from "../components/Navbar";
 
+// Helper function to animate letters one by one with increasing delay
+const animateLetters = (text, showLetterIndex) => {
+  return text.split('').map((letter, index) => (
+    <span
+      key={index}
+      className={`inline-block ${index <= showLetterIndex ? 'opacity-100' : 'opacity-0'} transition-opacity duration-500`}
+      style={{ animationDelay: `${index * 200}ms` }} // Delay per letter
+    >
+      {letter}
+    </span>
+  ));
+};
+
 const HomePage = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [latitude, setLatitude] = useState("");
@@ -13,6 +26,7 @@ const HomePage = () => {
   const [radius, setRadius] = useState("10"); 
   const [isLocationSearch, setIsLocationSearch] = useState(false);
   const [loadingLocation, setLoadingLocation] = useState(false);
+  const [showLetterIndex, setShowLetterIndex] = useState(0); // Track which letter to show
   const navigate = useNavigate();
   const location = useLocation(); 
 
@@ -28,7 +42,19 @@ const HomePage = () => {
       setRadius(rad);
       setIsLocationSearch(true);
     }
-  }, [location.search]);
+
+    // Set interval to show one letter at a time
+    const timer = setInterval(() => {
+      setShowLetterIndex((prevIndex) => prevIndex + 1);
+    }, 200); // Change 200 to control speed (lower is faster)
+
+    // Stop the interval once all letters have been shown
+    if (showLetterIndex >= "Welcome to Restaurant Finder".length - 1) {
+      clearInterval(timer);
+    }
+
+    return () => clearInterval(timer);
+  }, [location.search, showLetterIndex]);
 
   const fetchUserLocation = () => {
     if ("geolocation" in navigator) {
@@ -101,8 +127,10 @@ const HomePage = () => {
       </div>
 
       <div className="text-center text-white max-w-4xl w-full px-4 mt-32">
-        <h1 className="text-5xl font-bold mb-6 animate-fade-in">
-          Welcome to Restaurant Finder
+        <h1 className="text-5xl font-bold mb-6">
+          {animateLetters("Welcome", showLetterIndex)}<br/>
+          {animateLetters("to ", showLetterIndex)}<br/>
+          {animateLetters("Restaurant Finder", showLetterIndex)}
         </h1>
         <p className="text-xl mb-8 animate-fade-in delay-100">
           Discover the best restaurants, search by cuisine, city, or name, and explore detailed restaurant information.
