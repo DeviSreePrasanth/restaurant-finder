@@ -6,12 +6,13 @@ import { MdGpsFixed } from "react-icons/md"; // Icon for latitude
 import { RiMapPin2Fill } from "react-icons/ri"; // Icon for longitude
 import Navbar from "../components/Navbar";
 
+// Helper function to animate letters one by one with increasing delay
 const animateLetters = (text, showLetterIndex) => {
   return text.split('').map((letter, index) => (
     <span
       key={index}
       className={`inline-block ${index <= showLetterIndex ? 'opacity-100' : 'opacity-0'} transition-opacity duration-500`}
-      style={{ animationDelay: `${index * 1000}ms` }} // Delay per letter
+      style={{ animationDelay: `${index * 100}ms` }} // Delay per letter
     >
       {letter}
     </span>
@@ -127,12 +128,15 @@ const HomePage = () => {
 
       <div className="text-center text-white max-w-4xl w-full px-4 mt-32">
       <h1 className="text-5xl font-bold mb-6 hidden sm:inline-block">
-    {animateLetters("WelcometoRestaurantFinder", showLetterIndex)}
+    {animateLetters("Welcome", showLetterIndex)}
+    {animateLetters("to ", showLetterIndex)}
+    {animateLetters("Restaurant", showLetterIndex)}
+    {animateLetters("Finder", showLetterIndex)}
   </h1>
   <h1 className="text-5xl font-bold mb-6 sm:hidden">
     <span className="inline-block">
       {animateLetters("Welcome", showLetterIndex)}
-    </span>
+    </span><br/>
     <span className="inline-block">
       {animateLetters("to ", showLetterIndex)}
     </span>
