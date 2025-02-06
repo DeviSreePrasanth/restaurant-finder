@@ -2,17 +2,19 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import bg from "../images/bg.jpeg";
 import { FaMapMarkerAlt, FaSearch, FaLocationArrow } from "react-icons/fa";
+import { MdGpsFixed } from "react-icons/md"; // Icon for latitude
+import { RiMapPin2Fill } from "react-icons/ri"; // Icon for longitude
 import Navbar from "../components/Navbar";
 
 const HomePage = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [latitude, setLatitude] = useState("");
   const [longitude, setLongitude] = useState("");
-  const [radius, setRadius] = useState("10"); // Default radius is 10 km
+  const [radius, setRadius] = useState("10"); 
   const [isLocationSearch, setIsLocationSearch] = useState(false);
   const [loadingLocation, setLoadingLocation] = useState(false);
   const navigate = useNavigate();
-  const location = useLocation(); // Used to get the current URL parameters
+  const location = useLocation(); 
 
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
@@ -49,23 +51,36 @@ const HomePage = () => {
   };
 
   const handleSearchSubmit = () => {
-    const searchParams = new URLSearchParams();
-
     if (isLocationSearch) {
-      if (latitude && longitude) {
-        searchParams.append("latitude", latitude);
-        searchParams.append("longitude", longitude);
-        searchParams.append("radius", radius);
+      if (!latitude.trim() || !longitude.trim()) {
+        alert("Please enter latitude and longitude.");
+        return;
       }
+  
+      const latNum = parseFloat(latitude);
+      const lngNum = parseFloat(longitude);
+  
+      if (isNaN(latNum) || isNaN(lngNum) || latNum < -90 || latNum > 90 || lngNum < -180 || lngNum > 180) {
+        alert("Please enter valid latitude (-90 to 90) and longitude (-180 to 180).");
+        return;
+      }
+  
+      const searchParams = new URLSearchParams();
+      searchParams.append("latitude", latitude);
+      searchParams.append("longitude", longitude);
+      searchParams.append("radius", radius);
       navigate(`/locationR?${searchParams.toString()}`);
     } else {
-      if (searchQuery) {
-        searchParams.append("search", searchQuery);
+      if (!searchQuery.trim()) {
+        alert("Please enter a search query.");
+        return;
       }
+      const searchParams = new URLSearchParams();
+      searchParams.append("search", searchQuery);
       navigate(`/restaurants?${searchParams.toString()}`);
     }
   };
-
+  
   return (
     <div 
       style={{
@@ -77,8 +92,8 @@ const HomePage = () => {
         justifyContent: "center",
         alignItems: "center",
         flexDirection: "column",
-        height: "100vh", // Ensure no scrolling
-        overflow: "hidden", // Prevent scrolling
+        height: "100vh",
+        overflow: "hidden",
       }}
     >
       <div style={{ position: "absolute", top: 0, left: 0, right: 0 }}>
@@ -106,25 +121,38 @@ const HomePage = () => {
                 required
               />
             ) : (
-              <div className="flex gap-4 flex-grow">
-                <input
-                  type="text"
-                  value={latitude}
-                  onChange={(e) => setLatitude(e.target.value)}
-                  placeholder="Enter Latitude"
-                  className="py-3 px-4 text-black bg-transparent focus:outline-none placeholder-gray-700 focus:placeholder-gray-600 w-full transition-all duration-300"
-                  aria-label="Latitude"
-                  required
-                />
-                <input
-                  type="text"
-                  value={longitude}
-                  onChange={(e) => setLongitude(e.target.value)}
-                  placeholder="Enter Longitude"
-                  className="py-3 px-4 text-black bg-transparent focus:outline-none placeholder-gray-700 focus:placeholder-gray-600 w-full transition-all duration-300"
-                  aria-label="Longitude"
-                  required
-                />
+              <div className="flex flex-col sm:flex-row gap-4 flex-grow">
+                {/* Latitude Input */}
+                <div className="relative flex-grow">
+                  <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">
+                    <MdGpsFixed size={20} />
+                  </div>
+                  <input
+                    type="text"
+                    value={latitude}
+                    onChange={(e) => setLatitude(e.target.value)}
+                    placeholder="Enter Latitude"
+                    className="py-3 pl-10 pr-4 text-black bg-transparent focus:outline-none placeholder-gray-700 focus:placeholder-gray-600 w-full transition-all duration-300 border border-white border-opacity-30 rounded-lg"
+                    aria-label="Latitude"
+                    required
+                  />
+                </div>
+
+                {/* Longitude Input */}
+                <div className="relative flex-grow">
+                  <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">
+                    <RiMapPin2Fill size={20} />
+                  </div>
+                  <input
+                    type="text"
+                    value={longitude}
+                    onChange={(e) => setLongitude(e.target.value)}
+                    placeholder="Enter Longitude"
+                    className="py-3 pl-10 pr-4 text-black bg-transparent focus:outline-none placeholder-gray-700 focus:placeholder-gray-600 w-full transition-all duration-300 border border-white border-opacity-30 rounded-lg"
+                    aria-label="Longitude"
+                    required
+                  />
+                </div>
               </div>
             )}
 

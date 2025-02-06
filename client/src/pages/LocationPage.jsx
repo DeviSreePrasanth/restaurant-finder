@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom"; // Add this import
+import { Link } from "react-router-dom";
 
 const LocationPage = () => {
   const [restaurants, setRestaurants] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate(); // For redirection
 
   const lat = searchParams.get("latitude");
   const lng = searchParams.get("longitude");
@@ -18,9 +19,9 @@ const LocationPage = () => {
   useEffect(() => {
     const fetchRestaurants = async () => {
       try {
-        if (!lat || !lng || !radius) {
-          setError("Invalid location parameters. Please provide valid lat, lng, and radius.");
-          setLoading(false);
+        if (!lat || !lng || !radius || isNaN(lat) || isNaN(lng) || isNaN(radius)) {
+          alert("Enter valid latitude, longitude, and radius.");
+          navigate("/"); // Redirect to home page
           return;
         }
 
@@ -33,20 +34,22 @@ const LocationPage = () => {
 
         const data = await response.json();
         if (!Array.isArray(data) || data.length === 0) {
-          setError("No restaurant data found.");
-        } else {
-          const restaurantData = data.map(item => item.restaurant);
-          setRestaurants(restaurantData);
+          alert("No restaurants found in that location.");
+          navigate("/"); // Redirect to home page
+          return;
         }
-        setLoading(false);
+
+        setRestaurants(data.map(item => item.restaurant));
       } catch (error) {
-        setError(`Error: ${error.message}`);
+        alert(`Error: ${error.message}`);
+        navigate("/"); // Redirect to home page
+      } finally {
         setLoading(false);
       }
     };
 
     fetchRestaurants();
-  }, [lat, lng, radius]);
+  }, [lat, lng, radius, navigate]);
 
   return (
     <div className="location-page bg-gray-50 min-h-screen">
@@ -70,16 +73,7 @@ const LocationPage = () => {
           >
             Loading...
           </motion.div>
-        ) : error ? (
-          <motion.div
-            className="text-center text-red-500"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5 }}
-          >
-            Error: {error}
-          </motion.div>
-        ) : restaurants.length > 0 ? (
+        ) : (
           <motion.div
             className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
             initial={{ opacity: 0 }}
@@ -96,7 +90,6 @@ const LocationPage = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
               >
-                {/* Check if featured_image exists */}
                 {restaurant.featured_image ? (
                   <LazyLoadImage
                     src={restaurant.featured_image}
@@ -104,9 +97,6 @@ const LocationPage = () => {
                     className="restaurant-image w-full h-48 object-cover"
                     height="192"
                     width="100%"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.6 }}
                   />
                 ) : (
                   <div className="w-full h-48 bg-gray-200 flex justify-center items-center text-gray-600">
@@ -133,10 +123,9 @@ const LocationPage = () => {
                       {restaurant.user_rating?.aggregate_rating || "N/A"}⭐
                     </span>
                   </p>
-                  {/* View Details link */}
                   <div className="flex justify-between items-center p-4 bg-gray-50">
                     <Link
-                      to={`/restaurant/${restaurant.id}`}  // Navigate to the restaurant detail page
+                      to={`/restaurant/${restaurant.id}`}
                       className="text-blue-500 hover:text-blue-700 transition-colors duration-300"
                     >
                       View Details
@@ -145,15 +134,6 @@ const LocationPage = () => {
                 </div>
               </motion.div>
             ))}
-          </motion.div>
-        ) : (
-          <motion.div
-            className="text-center text-gray-500"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5 }}
-          >
-            No restaurants found within 100km.
           </motion.div>
         )}
       </div>
