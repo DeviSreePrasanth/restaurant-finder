@@ -133,13 +133,13 @@ const HomePage = () => {
     {animateLetters("Restaurant", showLetterIndex)}
     {animateLetters("Finder", showLetterIndex)}
   </h1>
-  <h1 className="text-5xl font-bold mb-6 sm:hidden">
+  <h1 className="text-5xl font-bold mb-8 sm:hidden">
     <span className="inline-block">
       {animateLetters("Welcome", showLetterIndex)}
     </span><br/>
     <span className="inline-block">
       {animateLetters("to ", showLetterIndex)}
-    </span>
+    </span><br/>
     <span className="inline-block">
       {animateLetters("Restaurant", showLetterIndex)}
     </span>
