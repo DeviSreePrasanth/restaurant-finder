@@ -12,7 +12,7 @@ const animateLetters = (text, showLetterIndex) => {
     <span
       key={index}
       className={`inline-block ${index <= showLetterIndex ? 'opacity-100' : 'opacity-0'} transition-opacity duration-500`}
-      style={{ animationDelay: `${index * 200}ms` }} // Delay per letter
+      style={{ animationDelay: `${index * 100}ms` }} // Delay per letter
     >
       {letter}
     </span>
@@ -127,10 +127,11 @@ const HomePage = () => {
       </div>
 
       <div className="text-center text-white max-w-4xl w-full px-4 mt-32">
-        <h1 className="text-5xl font-bold mb-6">
+        <h1 className="text-4xl font-bold mb-6">
           {animateLetters("Welcome", showLetterIndex)}<br/>
           {animateLetters("to ", showLetterIndex)}<br/>
-          {animateLetters("Restaurant Finder", showLetterIndex)}
+          {animateLetters("Restaurant", showLetterIndex)}
+          {animateLetters("Finder", showLetterIndex)}
         </h1>
         <p className="text-xl mb-8 animate-fade-in delay-100">
           Discover the best restaurants, search by cuisine, city, or name, and explore detailed restaurant information.
