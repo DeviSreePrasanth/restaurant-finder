@@ -32,7 +32,6 @@ const RestaurantList = () => {
       .then((data) => {
         let restaurantsData = data.flatMap((page) => page.restaurants?.map(item => item.restaurant) || []);
 
-        // Apply search filter if there's a search query
         if (searchQuery) {
           restaurantsData = restaurantsData.filter(restaurant =>
             restaurant.name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -48,11 +47,10 @@ const RestaurantList = () => {
       });
   }, [latitude, longitude, radius, searchQuery]);
 
-  // Pagination logic
+  const totalPages = Math.ceil(restaurants.length / restaurantsPerPage);
   const indexOfLastRestaurant = currentPage * restaurantsPerPage;
   const indexOfFirstRestaurant = indexOfLastRestaurant - restaurantsPerPage;
   const currentRestaurants = restaurants.slice(indexOfFirstRestaurant, indexOfLastRestaurant);
-  const totalPages = Math.ceil(restaurants.length / restaurantsPerPage);
 
   return (
     <>
@@ -99,24 +97,28 @@ const RestaurantList = () => {
             {/* Pagination */}
             <div className="pagination flex justify-center items-center gap-4 mt-8">
               <button
-                onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
                 disabled={currentPage === 1}
-                className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-300 disabled:bg-gray-300 disabled:cursor-not-allowed"
+                className="px-4 py-2 bg-gradient-to-r from-blue-400 to-teal-500 text-white rounded-lg hover:scale-105 transition-transform duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Previous
               </button>
-              <span className="text-lg text-gray-700">Page {currentPage}</span>
+
+              <span className="px-4 py-2 bg-gradient-to-r from-yellow-200 to-orange-200 text-gray-800 rounded-lg text-sm sm:text-base">
+                Page {currentPage} of {totalPages}
+              </span>
+
               <button
-                onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
                 disabled={currentPage === totalPages}
-                className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-300 disabled:bg-gray-300 disabled:cursor-not-allowed"
+                className="px-4 py-2 bg-gradient-to-r from-blue-400 to-teal-500 text-white rounded-lg hover:scale-105 transition-transform duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Next
               </button>
             </div>
           </div>
         ) : (
-          <p className="text-center text-gray-600 text-lg">No restaurants found</p>
+          <p className="text-center text-gray-600 text-lg">No restaurants found.</p>
         )}
       </div>
     </>

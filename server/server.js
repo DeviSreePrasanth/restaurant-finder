@@ -4,8 +4,8 @@ const cors = require("cors");
 require("dotenv").config();
 const { getRestaurantsByLocation } = require("./controller/LocationController");
 const getRestaurantById=require("./routes/SearchRoutes");
-const app = express();
 
+const app = express();
 app.use(cors());
 app.use(express.json());
 

@@ -2,17 +2,16 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import bg from "../images/bg.jpeg";
 import { FaMapMarkerAlt, FaSearch, FaLocationArrow } from "react-icons/fa";
-import { MdGpsFixed } from "react-icons/md"; // Icon for latitude
-import { RiMapPin2Fill } from "react-icons/ri"; // Icon for longitude
+import { MdGpsFixed } from "react-icons/md";
+import { RiMapPin2Fill } from "react-icons/ri"; 
 import Navbar from "../components/Navbar";
 
-// Helper function to animate letters one by one with increasing delay
 const animateLetters = (text, showLetterIndex) => {
   return text.split('').map((letter, index) => (
     <span
       key={index}
       className={`inline-block ${index <= showLetterIndex ? 'opacity-100' : 'opacity-0'} transition-opacity duration-500`}
-      style={{ animationDelay: `${index * 100}ms` }} // Delay per letter
+      style={{ animationDelay: `${index * 100}ms` }}
     >
       {letter}
     </span>
@@ -90,7 +89,7 @@ const HomePage = () => {
         alert("Please enter valid latitude (-90 to 90) and longitude (-180 to 180).");
         return;
       }
-  
+
       const searchParams = new URLSearchParams();
       searchParams.append("latitude", latitude);
       searchParams.append("longitude", longitude);

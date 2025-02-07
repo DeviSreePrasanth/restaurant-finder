@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { FaArrowRight } from "react-icons/fa";
+import Navbar from "../components/Navbar";
 
 const RestaurantDetails = () => {
   const { id } = useParams();
@@ -27,6 +28,8 @@ const RestaurantDetails = () => {
   if (!restaurant) return <p className="text-center text-red-500">Restaurant not found.</p>;
 
   return (
+    <>
+    <Navbar/>
     <div className="mt-10 p-8 bg-beige shadow-lg rounded-lg">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
         <div className="relative">
@@ -85,6 +88,7 @@ const RestaurantDetails = () => {
         </div>
       )}
     </div>
+    </>
   );
 };
 
