@@ -25,7 +25,8 @@ const HomePage = () => {
   const [radius, setRadius] = useState("10"); 
   const [isLocationSearch, setIsLocationSearch] = useState(false);
   const [loadingLocation, setLoadingLocation] = useState(false);
-  const [showLetterIndex, setShowLetterIndex] = useState(0); // Track which letter to show
+  const [showLetterIndex, setShowLetterIndex] = useState(0);
+  const [bgImage, setBgImage] = useState(localStorage.getItem("homeBg") || bg); 
   const navigate = useNavigate();
   const location = useLocation(); 
 
@@ -55,6 +56,12 @@ const HomePage = () => {
     return () => clearInterval(timer);
   }, [location.search, showLetterIndex]);
 
+  useEffect(() => {
+    if (!localStorage.getItem("homeBg")) {
+      localStorage.setItem("homeBg", bg);
+    }
+  }, []);
+  
   const fetchUserLocation = () => {
     if ("geolocation" in navigator) {
       setLoadingLocation(true);
