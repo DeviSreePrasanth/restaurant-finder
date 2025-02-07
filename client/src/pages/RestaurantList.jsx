@@ -54,7 +54,7 @@ const RestaurantList = () => {
       });
     }
   }, [latitude, longitude, radius, searchQuery]);
-
+  
   const totalPages = Math.ceil(restaurants.length / restaurantsPerPage);
   const indexOfLastRestaurant = currentPage * restaurantsPerPage;
   const indexOfFirstRestaurant = indexOfLastRestaurant - restaurantsPerPage;
@@ -113,7 +113,7 @@ const RestaurantList = () => {
               </button>
 
               <span className="px-4 py-2 bg-gradient-to-r from-yellow-200 to-orange-200 text-gray-800 rounded-lg text-sm sm:text-base">
-                Page {currentPage} of {totalPages}
+                Page {currentPage}
               </span>
 
               <button
