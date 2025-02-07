@@ -97,7 +97,7 @@ const HomePage = () => {
       navigate(`/locationR?${searchParams.toString()}`);
     } else {
       if (!searchQuery.trim()) {
-        alert("Please enter a search query.");
+        alert("Please enter name of the Restaurant.");
         return;
       }
       const searchParams = new URLSearchParams();

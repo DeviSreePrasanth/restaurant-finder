@@ -20,6 +20,12 @@ const RestaurantList = () => {
   const searchQuery = searchParams.get("search");
 
   useEffect(() => {
+    const storedRestaurants = localStorage.getItem("restaurants");
+  
+  if (storedRestaurants && !searchQuery) {
+    setRestaurants(JSON.parse(storedRestaurants));
+    setLoading(false);
+  }else{
     let apiUrl = "https://dsp-1.onrender.com/restaurants";
 
     fetch(apiUrl)
@@ -39,12 +45,14 @@ const RestaurantList = () => {
         }
 
         setRestaurants(restaurantsData);
+        localStorage.setItem("restaurants", JSON.stringify(restaurantsData)); // Save data
         setLoading(false);
       })
       .catch((error) => {
         setError(error.message);
         setLoading(false);
       });
+    }
   }, [latitude, longitude, radius, searchQuery]);
 
   const totalPages = Math.ceil(restaurants.length / restaurantsPerPage);
