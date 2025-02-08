@@ -8,59 +8,69 @@ const RestaurantList = () => {
   const [restaurants, setRestaurants] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(
+    parseInt(localStorage.getItem("currentPage")) || 1
+  );
   const restaurantsPerPage = 8;
 
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
-
   const latitude = searchParams.get("latitude");
   const longitude = searchParams.get("longitude");
   const radius = searchParams.get("radius");
   const searchQuery = searchParams.get("search");
 
   useEffect(() => {
-    const storedRestaurants = localStorage.getItem("restaurants");
-  
-    if (storedRestaurants && !searchQuery && !latitude && !longitude) {
-      setRestaurants(JSON.parse(storedRestaurants));
+    const storedRestaurants = JSON.parse(localStorage.getItem("restaurants"));
+    if (storedRestaurants && !searchQuery) {
+      setRestaurants(storedRestaurants);
       setLoading(false);
     } else {
-      let apiUrl = "https://dsp-1.onrender.com/restaurants";
-  
-      fetch(apiUrl)
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error("Failed to fetch data");
-          }
-          return response.json();
-        })
-        .then((data) => {
-          let restaurantsData = data.flatMap((page) => page.restaurants?.map(item => item.restaurant) || []);
-  
-          if (searchQuery) {
-            restaurantsData = restaurantsData.filter(restaurant =>
-              restaurant.name?.toLowerCase().includes(searchQuery.toLowerCase())
-            );
-          }
-  
-          setRestaurants(restaurantsData);
-          if (!searchQuery) {
-            localStorage.setItem("restaurants", JSON.stringify(restaurantsData));
-          }
-          setLoading(false);
-        })
-        .catch((error) => {
-          setError(error.message);
-          setLoading(false);
-        });
+      fetchRestaurants();
     }
   }, [latitude, longitude, radius, searchQuery]);
-  
-  const totalPages = Math.ceil(restaurants.length / restaurantsPerPage);
+
+  const fetchRestaurants = () => {
+    let apiUrl = "https://dsp-1.onrender.com/restaurants";
+    setLoading(true);
+
+    fetch(apiUrl)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to fetch data");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        let restaurantsData = data.flatMap((page) =>
+          page.restaurants?.map((item) => item.restaurant) || []
+        );
+
+        if (searchQuery) {
+          restaurantsData = restaurantsData.filter((restaurant) =>
+            restaurant.name.toLowerCase().includes(searchQuery.toLowerCase())
+          );
+        }
+
+        setRestaurants(restaurantsData);
+        localStorage.setItem("restaurants", JSON.stringify(restaurantsData));
+        setLoading(false);
+      })
+      .catch((error) => {
+        setError(error.message);
+        setLoading(false);
+      });
+  };
+
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+    localStorage.setItem("currentPage", newPage);
+  };
+
   const indexOfLastRestaurant = currentPage * restaurantsPerPage;
   const indexOfFirstRestaurant = indexOfLastRestaurant - restaurantsPerPage;
   const currentRestaurants = restaurants.slice(indexOfFirstRestaurant, indexOfLastRestaurant);
+  const totalPages = Math.ceil(restaurants.length / restaurantsPerPage);
 
   return (
     <>
@@ -107,28 +117,24 @@ const RestaurantList = () => {
             {/* Pagination */}
             <div className="pagination flex justify-center items-center gap-4 mt-8">
               <button
-                onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                onClick={() => handlePageChange(Math.max(currentPage - 1, 1))}
                 disabled={currentPage === 1}
-                className="px-4 py-2 bg-gradient-to-r from-blue-400 to-teal-500 text-white rounded-lg hover:scale-105 transition-transform duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-300 disabled:bg-gray-300 disabled:cursor-not-allowed"
               >
                 Previous
               </button>
-
-              <span className="px-4 py-2 bg-gradient-to-r from-yellow-200 to-orange-200 text-gray-800 rounded-lg text-sm sm:text-base">
-                Page {currentPage}
-              </span>
-
+              <span className="text-lg text-gray-700">Page {currentPage}</span>
               <button
-                onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                onClick={() => handlePageChange(Math.min(currentPage + 1, totalPages))}
                 disabled={currentPage === totalPages}
-                className="px-4 py-2 bg-gradient-to-r from-blue-400 to-teal-500 text-white rounded-lg hover:scale-105 transition-transform duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-300 disabled:bg-gray-300 disabled:cursor-not-allowed"
               >
                 Next
               </button>
             </div>
           </div>
         ) : (
-          <p className="text-center text-gray-600 text-lg">No restaurants found.</p>
+          <p className="text-center text-gray-600 text-lg">No restaurants found</p>
         )}
       </div>
     </>
