@@ -4,6 +4,8 @@ import HomePage from './pages/HomePage';
 import RestaurantList from './pages/RestaurantList';
 import RestaurantDetail from './pages/RestaurantDetail';
 import LocationPage from './pages/LocationPage';
+import ImageSearch from './pages/Image-search';
+import Search from './pages/Search';
 import './App.css';
 
 function App() {
@@ -15,6 +17,9 @@ function App() {
           <Route path="/restaurants" element={<RestaurantList />} />
           <Route path="/restaurant/:id" element={<RestaurantDetail />} />
           <Route path="/locationR" element={<LocationPage />} />
+          <Route path="/image-search" element={<ImageSearch/>} />
+          <Route path="/search" element={<Search />} />
+
         </Routes>
       </div>
     </Router>
