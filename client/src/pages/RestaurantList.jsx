@@ -31,7 +31,7 @@ const RestaurantList = () => {
   }, [latitude, longitude, radius, searchQuery]);
 
   const fetchRestaurants = () => {
-    let apiUrl = "https://dsp-1.onrender.com/restaurants";
+    let apiUrl = "https://restaurant-finder-0in9.onrender.com/restaurants";
     setLoading(true);
 
     fetch(apiUrl)

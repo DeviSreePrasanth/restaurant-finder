@@ -25,7 +25,7 @@ const LocationPage = () => {
           return;
         }
 
-        const apiUrl = `https://dsp-1.onrender.com/locationR?lat=${lat}&lng=${lng}&radius=${radius}`;
+        const apiUrl = `https://restaurant-finder-0in9.onrender.com/locationR?lat=${lat}&lng=${lng}&radius=${radius}`;
         const response = await fetch(apiUrl);
 
         if (!response.ok) {
