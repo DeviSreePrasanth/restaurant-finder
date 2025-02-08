@@ -14,46 +14,48 @@ const RestaurantList = () => {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
 
-  const latitude = searchParams.get("latitude");
-  const longitude = searchParams.get("longitude");
-  const radius = searchParams.get("radius");
   const searchQuery = searchParams.get("search");
 
   useEffect(() => {
-    const storedRestaurants = localStorage.getItem("restaurants");
-  
-  if (storedRestaurants && !searchQuery) {
-    setRestaurants(JSON.parse(storedRestaurants));
-    setLoading(false);
-  }else{
-    let apiUrl = "https://dsp-1.onrender.com/restaurants";
+    const storedRestaurants = JSON.parse(localStorage.getItem("restaurants")) || [];
+    
+    if (storedRestaurants.length > 0 && !searchQuery) {
+      setRestaurants(storedRestaurants);
+      setLoading(false);
+    } else {
+      let apiUrl = "https://dsp-1.onrender.com/restaurants";
 
-    fetch(apiUrl)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Failed to fetch data");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        let restaurantsData = data.flatMap((page) => page.restaurants?.map(item => item.restaurant) || []);
+      fetch(apiUrl)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Failed to fetch data");
+          }
+          return response.json();
+        })
+        .then((data) => {
+          let restaurantsData = data.flatMap((page) => page.restaurants?.map(item => item.restaurant) || []);
 
-        if (searchQuery) {
-          restaurantsData = restaurantsData.filter(restaurant =>
-            restaurant.name.toLowerCase().includes(searchQuery.toLowerCase())
-          );
-        }
+          if (searchQuery) {
+            restaurantsData = restaurantsData.filter(restaurant =>
+              restaurant.name.toLowerCase().includes(searchQuery.toLowerCase())
+            );
+          }
 
-        setRestaurants(restaurantsData);
-        localStorage.setItem("restaurants", JSON.stringify(restaurantsData)); // Save data
-        setLoading(false);
-      })
-      .catch((error) => {
-        setError(error.message);
-        setLoading(false);
-      });
+          setRestaurants(restaurantsData.slice(0, restaurantsPerPage));
+          localStorage.setItem("restaurants", JSON.stringify(restaurantsData.slice(0, restaurantsPerPage)));
+          setLoading(false);
+
+          // Fetch remaining data in the background
+          setTimeout(() => {
+            setRestaurants(restaurantsData);
+          }, 1000);
+        })
+        .catch((error) => {
+          setError(error.message);
+          setLoading(false);
+        });
     }
-  }, [latitude, longitude, radius, searchQuery]);
+  }, [searchQuery]);
   
   const totalPages = Math.ceil(restaurants.length / restaurantsPerPage);
   const indexOfLastRestaurant = currentPage * restaurantsPerPage;
