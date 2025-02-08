@@ -45,7 +45,7 @@ const RestaurantList = () => {
         }
 
         setRestaurants(restaurantsData);
-        localStorage.setItem("restaurants", JSON.stringify(restaurantsData)); // Save data
+        localStorage.setItem("restaurants", JSON.stringify(restaurantsData.slice(0,8))); // Save data
         setLoading(false);
       })
       .catch((error) => {
