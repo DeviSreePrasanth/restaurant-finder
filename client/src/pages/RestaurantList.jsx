@@ -22,36 +22,38 @@ const RestaurantList = () => {
   useEffect(() => {
     const storedRestaurants = localStorage.getItem("restaurants");
   
-  if (storedRestaurants && !searchQuery) {
-    setRestaurants(JSON.parse(storedRestaurants));
-    setLoading(false);
-  }else{
-    let apiUrl = "https://dsp-1.onrender.com/restaurants";
-
-    fetch(apiUrl)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Failed to fetch data");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        let restaurantsData = data.flatMap((page) => page.restaurants?.map(item => item.restaurant) || []);
-
-        if (searchQuery) {
-          restaurantsData = restaurantsData.filter(restaurant =>
-            restaurant.name.toLowerCase().includes(searchQuery.toLowerCase())
-          );
-        }
-
-        setRestaurants(restaurantsData);
-        localStorage.setItem("restaurants", JSON.stringify(restaurantsData)); 
-        setLoading(false);
-      })
-      .catch((error) => {
-        setError(error.message);
-        setLoading(false);
-      });
+    if (storedRestaurants && !searchQuery && !latitude && !longitude) {
+      setRestaurants(JSON.parse(storedRestaurants));
+      setLoading(false);
+    } else {
+      let apiUrl = "https://dsp-1.onrender.com/restaurants";
+  
+      fetch(apiUrl)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Failed to fetch data");
+          }
+          return response.json();
+        })
+        .then((data) => {
+          let restaurantsData = data.flatMap((page) => page.restaurants?.map(item => item.restaurant) || []);
+  
+          if (searchQuery) {
+            restaurantsData = restaurantsData.filter(restaurant =>
+              restaurant.name?.toLowerCase().includes(searchQuery.toLowerCase())
+            );
+          }
+  
+          setRestaurants(restaurantsData);
+          if (!searchQuery) {
+            localStorage.setItem("restaurants", JSON.stringify(restaurantsData));
+          }
+          setLoading(false);
+        })
+        .catch((error) => {
+          setError(error.message);
+          setLoading(false);
+        });
     }
   }, [latitude, longitude, radius, searchQuery]);
   
