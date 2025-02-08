@@ -8,27 +8,16 @@ const RestaurantList = () => {
   const [restaurants, setRestaurants] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [currentPage, setCurrentPage] = useState(
-    parseInt(localStorage.getItem("currentPage")) || 1
-  );
+  const [currentPage, setCurrentPage] = useState(1);
   const restaurantsPerPage = 8;
 
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
-  const latitude = searchParams.get("latitude");
-  const longitude = searchParams.get("longitude");
-  const radius = searchParams.get("radius");
   const searchQuery = searchParams.get("search");
 
   useEffect(() => {
-    const storedRestaurants = JSON.parse(localStorage.getItem("restaurants"));
-    if (storedRestaurants && !searchQuery) {
-      setRestaurants(storedRestaurants);
-      setLoading(false);
-    } else {
-      fetchRestaurants();
-    }
-  }, [latitude, longitude, radius, searchQuery]);
+    fetchRestaurants();
+  }, [searchQuery]);
 
   const fetchRestaurants = () => {
     let apiUrl = "https://restaurant-finder-0in9.onrender.com/restaurants";
@@ -53,7 +42,6 @@ const RestaurantList = () => {
         }
 
         setRestaurants(restaurantsData);
-        localStorage.setItem("restaurants", JSON.stringify(restaurantsData));
         setLoading(false);
       })
       .catch((error) => {
@@ -64,7 +52,6 @@ const RestaurantList = () => {
 
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage);
-    localStorage.setItem("currentPage", newPage);
   };
 
   const indexOfLastRestaurant = currentPage * restaurantsPerPage;
