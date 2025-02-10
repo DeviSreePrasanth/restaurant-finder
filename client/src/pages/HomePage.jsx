@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import bg from "../images/bg.jpeg";
+import bg from "../images/bg.webp";
 import Navbar from "../components/Navbar";
 
 const HomePage = () => {

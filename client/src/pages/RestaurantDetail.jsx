@@ -29,7 +29,6 @@ const RestaurantDetails = () => {
 
   return (
     <>
-    <Navbar/>
     <div className="mt-10 p-8 bg-beige shadow-lg rounded-lg">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
         <div className="relative">

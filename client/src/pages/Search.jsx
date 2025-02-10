@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import bg from "../images/bg.jpeg";
+import bg from "../images/bg.webp";
 import { FaMapMarkerAlt, FaSearch, FaCamera } from "react-icons/fa";
 import Navbar from "../components/Navbar";
 

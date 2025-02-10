@@ -72,8 +72,8 @@ const RestaurantList = () => {
 
   return (
     <>
-      <Navbar />
-      <div className="restaurant-list p-5 bg-gray-50 min-h-screen">
+      <Navbar textBlack={true} />
+      <div className="restaurant-list p-5 bg-gray-50 mt-20 min-h-screen">
         {loading ? (
           <p className="text-center text-gray-600">Loading...</p>
         ) : error ? (
