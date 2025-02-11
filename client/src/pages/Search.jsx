@@ -152,7 +152,7 @@ const Search = () => {
                   onClick={fetchUserLocation}
                   className="bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition-all duration-300"
                 >
-                  {loadingLocation ? "Fetching Location..." : "Search Nearby Restaurants"}
+                  {loadingLocation ? "Fetching Location..." : "Use My Location"}
                 </button>
               </motion.div>
             )}
