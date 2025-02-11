@@ -5,7 +5,7 @@ import "react-lazy-load-image-component/src/effects/blur.css";
 import NavBar from "../components/Navbar";
 import { motion } from "framer-motion";
 
-const NameSearchPage = () => {
+const NameSearch = () => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const searchName = queryParams.get("name"); // Extract search query
@@ -136,4 +136,4 @@ const NameSearchPage = () => {
   );
 };
 
-export default NameSearchPage;
+export default NameSearch;
