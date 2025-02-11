@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { FaHome, FaUtensils } from "react-icons/fa"; // Icons for Home & Restaurants
+import { FaHome, FaUtensils,FaSearch } from "react-icons/fa"; // Icons for Home & Restaurants
 import img from "../images/Food.png";
 
 const Navbar = ({ textBlack }) => {
@@ -25,6 +25,12 @@ const Navbar = ({ textBlack }) => {
             <Link to="/restaurants" className={`flex items-center hover:opacity-80 transition duration-300 ${textBlack ? 'text-black' : 'text-white'}`}>
               <FaUtensils size={24} />
               <h1 className="ml-2 hidden sm:inline">Restaurants</h1> {/* Hidden on small screens */}
+            </Link>
+          </li>
+          <li className="flex items-center">
+            <Link to="/search" className={`flex items-center hover:opacity-80 transition duration-300 ${textBlack ? 'text-black' : 'text-white'}`}>
+              <FaSearch size={24} />
+              <h1 className="ml-2 hidden sm:inline">Search</h1> {/* Hidden on small screens */}
             </Link>
           </li>
         </ul>

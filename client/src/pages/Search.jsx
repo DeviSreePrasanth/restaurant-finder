@@ -49,11 +49,11 @@ const Search = () => {
         alert("Please upload an image.");
         return;
       }
-  
+
       // Create FormData
       const formData = new FormData();
       formData.append("image", imageFile);
-  
+
       // Navigate to /imagesearch with formData (handle fetching in that component)
       navigate("/image-search", { state: { imageFile } });
     } else {
@@ -64,8 +64,6 @@ const Search = () => {
       navigate(`/restaurants?search=${searchQuery}`);
     }
   };
-  
-  
 
   // Animation Variants
   const fadeIn = {
@@ -101,8 +99,8 @@ const Search = () => {
               onClick={() => setSearchMode(mode)}
               className={`py-2 px-4 rounded-lg text-white font-semibold transition-all duration-300 ${
                 searchMode === mode
-                  ? "bg-gradient-to-r from-blue-500 to-purple-600"
-                  : "bg-gradient-to-r from-gray-700 to-gray-800 hover:from-gray-600 hover:to-gray-700"
+                  ? "bg-blue-600 shadow-lg hover:bg-blue-700"
+                  : "bg-gray-700 hover:bg-gray-600"
               }`}
             >
               {mode === "name" && "Search by Name"}
@@ -150,8 +148,11 @@ const Search = () => {
                   placeholder="Enter Radius (in km)"
                   className="w-full py-3 px-4 text-black bg-white/90 rounded-lg focus:outline-none"
                 />
-                <button onClick={fetchUserLocation} className="bg-gradient-to-r from-green-500 to-teal-600 text-white py-2 px-4 rounded-lg">
-                  {loadingLocation ? "Fetching Location..." : " Search Nearby Restaurants"}
+                <button
+                  onClick={fetchUserLocation}
+                  className="bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition-all duration-300"
+                >
+                  {loadingLocation ? "Fetching Location..." : "Search Nearby Restaurants"}
                 </button>
               </motion.div>
             )}
@@ -172,7 +173,10 @@ const Search = () => {
             )}
           </AnimatePresence>
 
-          <button onClick={handleSearchSubmit} className="mt-6 w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white py-3 rounded-lg hover:from-blue-600 hover:to-purple-700 transition-all duration-300">
+          <button
+            onClick={handleSearchSubmit}
+            className="mt-6 w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-all duration-300"
+          >
             Search
           </button>
         </motion.div>
