@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import bg from "../images/bg.webp";
-import Navbar from "../components/Navbar";
+import NavBar from "../components/Navbar";
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -20,7 +20,7 @@ const HomePage = () => {
       }}
     >
       <div style={{ position: "absolute", top: 0, left: 0, right: 0 }}>
-        <Navbar />
+      <NavBar textWhite={true} />
       </div>
       <div className="text-center text-white max-w-4xl w-full px-4 mt-32">
         <h1 className="text-5xl font-bold mb-6">Welcome to Restaurant Finder</h1>

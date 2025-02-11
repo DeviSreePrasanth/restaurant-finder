@@ -6,6 +6,7 @@ import RestaurantDetail from './pages/RestaurantDetail';
 import LocationPage from './pages/LocationPage';
 import ImageSearch from './pages/Image-search';
 import Search from './pages/Search';
+import Namesearch from './pages/NameSearch';
 import './App.css';
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
           <Route path="/restaurant/:id" element={<RestaurantDetail />} />
           <Route path="/locationR" element={<LocationPage />} />
           <Route path="/image-search" element={<ImageSearch/>} />
+          <Route path="/namesearch" element={<Namesearch/>} />
           <Route path="/search" element={<Search />} />
 
         </Routes>

@@ -61,7 +61,7 @@ const Search = () => {
         alert("Please enter the name of the restaurant.");
         return;
       }
-      navigate(`/restaurants?search=${searchQuery}`);
+      navigate(`/namesearch?name=${searchQuery}`);
     }
   };
 
@@ -72,6 +72,7 @@ const Search = () => {
   };
 
   return (
+    <>
     <div
       style={{
         backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${bg})`,
@@ -85,7 +86,7 @@ const Search = () => {
       }}
     >
       <div style={{ position: "absolute", top: 0, left: 0, right: 0 }}>
-        <Navbar />
+        <Navbar textWhite={true} />
       </div>
 
       <motion.div className="text-center text-white max-w-4xl w-full px-4 mt-32" initial="hidden" animate="visible" variants={fadeIn}>
@@ -182,6 +183,7 @@ const Search = () => {
         </motion.div>
       </motion.div>
     </div>
+    </>
   );
 };
 

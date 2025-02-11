@@ -2,8 +2,8 @@ const  client = require('../config/db')
 
 const allrestaurants = async (req, res) => {
     try {
-      const db = client.db("restaurant"); 
-      const collection = db.collection("restaurantList"); 
+      const db = client.db("res"); 
+      const collection = db.collection("new"); 
   
       const page = parseInt(req.query.page) || 1; 
       const limit = parseInt(req.query.limit) || 16; 

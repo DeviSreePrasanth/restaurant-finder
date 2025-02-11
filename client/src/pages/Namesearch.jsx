@@ -1,59 +1,53 @@
-import React, { useState, useEffect } from "react";
-import { useSearchParams, useNavigate } from "react-router-dom";
-import Navbar from "../components/Navbar";
+import { useState, useEffect } from "react";
+import { useLocation, Link } from "react-router-dom";
 import { LazyLoadImage } from "react-lazy-load-image-component";
+import "react-lazy-load-image-component/src/effects/blur.css";
+import NavBar from "../components/Navbar";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
 
-const LocationPage = () => {
+const NameSearchPage = () => {
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const searchName = queryParams.get("name"); // Extract search query
+
   const [restaurants, setRestaurants] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-  const [searchParams] = useSearchParams();
-  const navigate = useNavigate(); // For redirection
-
-  const lat = searchParams.get("latitude");
-  const lng = searchParams.get("longitude");
-  const radius = searchParams.get("radius");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchRestaurants = async () => {
-      try {
-        if (!lat || !lng || !radius || isNaN(lat) || isNaN(lng) || isNaN(radius)) {
-          alert("Enter valid latitude, longitude, and radius.");
-          navigate("/"); // Redirect to home page
-          return;
-        }
+    if (!searchName) {
+      setError("No restaurant name provided.");
+      return;
+    }
 
-        const apiUrl = `https://restaurant-finder-0in9.onrender.com/locationR?lat=${lat}&lng=${lng}&radius=${radius}`;
-        const response = await fetch(apiUrl);
+    const fetchRestaurants = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const response = await fetch(
+          `http://localhost:5000/namesearch?name=${encodeURIComponent(searchName)}`
+        );
 
         if (!response.ok) {
-          throw new Error("Failed to fetch data from the server.");
+          throw new Error(`Failed to fetch data: ${response.status} ${response.statusText}`);
         }
 
         const data = await response.json();
-        if (!Array.isArray(data) || data.length === 0) {
-          alert("No restaurants found in that location.");
-          navigate("/"); // Redirect to home page
-          return;
-        }
-
-        setRestaurants(data.map(item => item.restaurant));
+        console.log(data);
+        setRestaurants(data);
       } catch (error) {
-        alert(`Error: ${error.message}`);
-        navigate("/"); // Redirect to home page
-      } finally {
-        setLoading(false);
+        console.error("Error fetching restaurants:", error);
+        setError("Failed to fetch restaurants.");
       }
+      setLoading(false);
     };
 
     fetchRestaurants();
-  }, [lat, lng, radius, navigate]);
+  }, [searchName]);
 
   return (
     <div className="location-page bg-gray-50 min-h-screen">
-      <Navbar />
+      <NavBar />
       <div className="p-5">
         <motion.h1
           className="text-2xl font-bold mt-20 mb-6 text-center text-black-600"
@@ -126,6 +120,7 @@ const LocationPage = () => {
                   <div className="flex justify-between items-center p-4 bg-gray-50">
                     <Link
                       to={`/restaurant/${restaurant.id}`}
+                      
                       className="text-blue-500 hover:text-blue-700 transition-colors duration-300"
                     >
                       View Details
@@ -141,4 +136,4 @@ const LocationPage = () => {
   );
 };
 
-export default LocationPage;
+export default NameSearchPage;
