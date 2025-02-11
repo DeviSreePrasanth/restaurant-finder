@@ -114,7 +114,7 @@ const NameSearchPage = () => {
                   <p className="restaurant-rating text-gray-600 mt-2">
                     Rating:{" "}
                     <span className="font-semibold text-green-600">
-                      {restaurant.user_rating?.aggregate_rating || "N/A"}⭐
+                      {restaurant?.aggregate_rating || "N/A"}⭐
                     </span>
                   </p>
                   <div className="flex justify-between items-center p-4 bg-gray-50">

@@ -29,7 +29,7 @@ const getRestaurantByName = async (req, res) => {
                     location: "$restaurants.restaurant.location",
                     featured_image: "$restaurants.restaurant.featured_image",
                     average_cost_for_two: "$restaurants.restaurant.average_cost_for_two",
-                    aggregate_rating: "$restaurants.restaurant.aggregate_rating"
+                    aggregate_rating: "$restaurants.restaurant.user_rating.aggregate_rating"
                 }
             }
         ]).toArray();
