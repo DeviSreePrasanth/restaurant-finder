@@ -25,7 +25,7 @@ const NameSearchPage = () => {
       setError(null);
       try {
         const response = await fetch(
-          `http://localhost:5000/namesearch?name=${encodeURIComponent(searchName)}`
+          `https://restaurant-finder-0in9.onrender.com/namesearch?name=${encodeURIComponent(searchName)}`
         );
 
         if (!response.ok) {
